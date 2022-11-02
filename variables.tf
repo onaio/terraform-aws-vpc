@@ -66,3 +66,28 @@ variable "cidr_new_bits" {
   type        = number
   description = "The number of bits to extend the VPC CIDR block for each of the subnets."
 }
+
+
+variable "create_private_subnets" {
+  default     = false
+  type        = bool
+  description = "Determines whether private subnets should be created in the azs provided"
+}
+
+variable "allow_private_subnets_access_to_internet" {
+  default     = false
+  type        = bool
+  description = "Determines whether nat gateway should created and corresponding routes added to the subnets"
+}
+locals {
+  # Common tags to be assigned to all resources
+  common_tags = {
+    Name            = "${var.vpc_name}-${var.env}"
+    RawName         = var.vpc_name
+    OwnerList       = var.owner
+    EnvironmentList = var.env
+    EndDate         = var.end_date
+    ProjectList     = var.project
+    DeploymentType  = var.deployment_type
+  }
+}

@@ -52,7 +52,7 @@ resource "aws_route_table" "without-peer" {
   tags = local.common_tags
 }
 
-resource "aws_route_table" "private_subnet_connection_to_nat_gatway" {
+resource "aws_route_table" "private_subnet_connection_to_nat_gateway" {
   count  = var.allow_private_subnets_access_to_internet ? 1 : 0
   vpc_id = aws_vpc.main.id
 
@@ -98,5 +98,5 @@ resource "aws_route_table_association" "main" {
 resource "aws_route_table_association" "private_subnets_association" {
   count          = var.allow_private_subnets_access_to_internet ? length(var.availability_zones) : 0
   subnet_id      = element(aws_subnet.private_subnets.*.id, count.index)
-  route_table_id = aws_route_table.connection_to_nat_gatway[0].id
+  route_table_id = aws_route_table.private_subnet_connection_to_nat_gateway[0].id
 }

@@ -9,5 +9,5 @@ Check [variables.tf](./variables.tf) for a list of variables that can be set for
 
 | Variable                                  | Description                           |  Default
 | ----------------------------------------- | ------------------------------------- | ----------- | 
-| allow_private_subnets_access_to_internet  | Creates nat gateway and add routes to it to allow ec2 to the private subnets internet                               | false       | 
+| allow_private_subnets_access_to_internet  | Creates nat gateway and adds routes to it to allow the private subnets access internet                               | false       | 
 | create_private_subnets                    | Creates subnets with no route to Internet Gateway.  | false       |    

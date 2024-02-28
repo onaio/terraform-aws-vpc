@@ -88,6 +88,7 @@ locals {
     EnvironmentList = var.env
     EndDate         = var.end_date
     ProjectList     = var.project
+    Group           = "${var.project}-${var.env}"
     DeploymentType  = var.deployment_type
   }
 }

@@ -3,7 +3,7 @@ output "main_vpc_id" {
 }
 
 output "subnet_ids" {
-  value = aws_subnet.onadata-api-subnets.*.id
+  value = aws_subnet.public_subnets.*.id
 }
 
 output "vpc_arn" {

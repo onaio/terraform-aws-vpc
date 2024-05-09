@@ -72,7 +72,7 @@ resource "aws_route" "default_to_main" {
   vpc_peering_connection_id = aws_vpc_peering_connection.main_to_default[count.index].id
 }
 
-resource "aws_subnet" "onadata-api-subnets" {
+resource "aws_subnet" "public_subnets" {
   availability_zone       = element(var.availability_zones, count.index)
   count                   = length(var.availability_zones)
   vpc_id                  = aws_vpc.main.id
@@ -92,7 +92,7 @@ resource "aws_subnet" "private_subnets" {
 
 resource "aws_route_table_association" "main" {
   count          = length(var.availability_zones)
-  subnet_id      = element(aws_subnet.onadata-api-subnets.*.id, count.index)
+  subnet_id      = element(aws_subnet.public_subnets.*.id, count.index)
   route_table_id = var.peer_to_default ? aws_route_table.with-peer[0].id : aws_route_table.without-peer[0].id
 }
 

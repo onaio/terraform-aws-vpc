@@ -22,9 +22,7 @@ resource "aws_vpc_peering_connection" "main_to_default" {
 
 resource "aws_internet_gateway" "main" {
   vpc_id = aws_vpc.main.id
-  tags = merge(local.common_tags, {
-    "Name" = "${local.common_tags.Name}-default-internet-gateway"
-  })
+  tags   = merge(local.common_tags, { "Name" = "${local.common_tags.Name}-default-internet-gateway" })
 }
 
 resource "aws_route_table" "with-peer" {
@@ -40,9 +38,7 @@ resource "aws_route_table" "with-peer" {
     cidr_block                = data.aws_vpc.default.cidr_block
     vpc_peering_connection_id = aws_vpc_peering_connection.main_to_default[count.index].id
   }
-  tags = merge(local.common_tags, {
-    "Name" = "${local.common_tags.Name}-default-route-table"
-  })
+  tags = merge(local.common_tags, { "Name" = "${local.common_tags.Name}-default-route-table" })
 }
 
 resource "aws_route_table" "without-peer" {
@@ -54,18 +50,14 @@ resource "aws_route_table" "without-peer" {
     gateway_id = aws_internet_gateway.main.id
   }
 
-  tags = merge(local.common_tags, {
-    "Name" = "${local.common_tags.Name}-default-route-table"
-  })
+  tags = merge(local.common_tags, { "Name" = "${local.common_tags.Name}-default-route-table" })
 }
 
 resource "aws_route_table" "private_subnet_connection_to_nat_gateway" {
   count  = var.allow_private_subnets_access_to_internet ? length(var.availability_zones) : 0
   vpc_id = aws_vpc.main.id
 
-  tags = merge(local.common_tags, {
-    "Name" = "${local.common_tags.Name}-route-table-${count.index + 1}"
-  })
+  tags = merge(local.common_tags, { "Name" = "${local.common_tags.Name}-route-table-${count.index + 1}" })
 }
 
 resource "aws_route" "default_nat_gateway_route" {
@@ -89,21 +81,15 @@ resource "aws_subnet" "onadata-api-subnets" {
   vpc_id                  = aws_vpc.main.id
   cidr_block              = cidrsubnet(aws_vpc.main.cidr_block, var.cidr_new_bits, count.index)
   map_public_ip_on_launch = var.map_public_ip_on_launch
-
-  tags = merge(local.common_tags, {
-    "Name" = "${local.common_tags.Name}-public-subnet-${count.index + 1}"
-  })
+  tags                    = merge(local.common_tags, { "Name" = "${local.common_tags.Name}-public-subnet-${count.index + 1}" })
 }
 
 resource "aws_subnet" "private_subnets" {
-  availability_zone = element(var.availability_zones, count.index)
-  count             = var.create_private_subnets ? length(var.availability_zones) : 0
-  vpc_id            = aws_vpc.main.id
-  cidr_block        = cidrsubnet(aws_vpc.main.cidr_block, var.cidr_new_bits, count.index + length(var.availability_zones))
-
-  tags = merge(local.common_tags, {
-    "Name" = "${local.common_tags.Name}-private-subnet-${count.index + 1}"
-  })
+  availability_zone       = element(var.availability_zones, count.index)
+  count                   = var.create_private_subnets ? length(var.availability_zones) : 0
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = cidrsubnet(aws_vpc.main.cidr_block, var.cidr_new_bits, count.index + length(var.availability_zones))
+  tags                    = merge(local.common_tags, { "Name" = "${local.common_tags.Name}-private-subnet-${count.index + 1}" })
   map_public_ip_on_launch = var.map_public_ip_on_launch
 }
 

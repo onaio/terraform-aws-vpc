@@ -1,6 +1,6 @@
 resource "aws_eip" "private_subnets_nat_gateway_public_ip" {
   count = var.allow_private_subnets_access_to_internet ? length(var.availability_zones) : 0
-  vpc   = true
+  domain = "vpc"
   tags  = merge(local.common_tags, { "Name" = "${local.common_tags.Name}-nat-gateway-${count.index + 1}-ip" })
 
 }

@@ -82,6 +82,7 @@ variable "allow_private_subnets_access_to_internet" {
 locals {
   # Common tags to be assigned to all resources
   common_tags = {
+    Group           = "${var.vpc_name}"
     Name            = "${var.vpc_name}-${var.env}"
     RawName         = var.vpc_name
     OwnerList       = var.owner

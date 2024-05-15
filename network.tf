@@ -60,11 +60,11 @@ resource "aws_route_table" "private_subnet_connection_to_nat_gateway" {
   tags = merge(local.common_tags, { "Name" = "${local.common_tags.Name}-route-table-${count.index + 1}" })
 }
 
-resource aws_route "default_nat_gateway_route" {
-  count  = var.allow_private_subnets_access_to_internet ? length(var.availability_zones) : 0
-  route_table_id =  aws_route_table.private_subnet_connection_to_nat_gateway[count.index].id
+resource "aws_route" "default_nat_gateway_route" {
+  count                  = var.allow_private_subnets_access_to_internet ? length(var.availability_zones) : 0
+  route_table_id         = aws_route_table.private_subnet_connection_to_nat_gateway[count.index].id
   destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id = aws_nat_gateway.nat_gateway[count.index].id
+  nat_gateway_id         = aws_nat_gateway.nat_gateway[count.index].id
 }
 
 resource "aws_route" "default_to_main" {

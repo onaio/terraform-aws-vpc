@@ -58,7 +58,7 @@ resource "aws_route_table" "private_subnet_connection_to_nat_gateway" {
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_nat_gateway.nat_gateway[count.index].id
+    nat_gateway_id = aws_nat_gateway.nat_gateway[count.index].id
   }
   tags = merge(local.common_tags, { "Name" = "${local.common_tags.Name}-route-table-${count.index + 1}" })
 }
